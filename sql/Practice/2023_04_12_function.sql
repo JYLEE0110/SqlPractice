@@ -144,8 +144,20 @@ round(avg(sal))as "avgSal",
 max(sal) as topSal,
 min(sal) as bottomSal,
 count(comm)
-from emp group by deptno order by deptno;
+from emp 
+group by deptno 
+-- 평균 급여가 2000이상인 그룹
+--having avg(sal) >= 2000
+having sum(sal) > 10000
+order by deptno;
+
+select job, count(*), trunc(avg(sal)), sum(sal), max(sal), min(sal)
+from emp
+group by job;
+
+
 select job from emp group by job;
+
 
 select * from emp order by deptno;
 
