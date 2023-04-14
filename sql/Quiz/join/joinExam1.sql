@@ -6,17 +6,36 @@ where e.deptno = d.deptno and e.ename = 'SCOTT';
 --33. INNER JOIN과 ON 연산자를 사용하여 사원 이름과 함께 그 사원이 소속된 부서이름과 지역 명을 출력하시오.
 select e.ename, d.dname, d.loc
 from emp e inner join dept d
-on e.deptno = d. deptno;
+on e.deptno = d. deptno
+where e.ename = 'SCOTT';
+
+select e.ename, d.dname, d.loc
+from emp e natural join dept d;
+
+select e.ename, d.dname, d.loc
+from emp e join dept d using(deptno);
+
+select e.deptno, sum(sal)
+from emp e inner join dept d
+on e.deptno = d. deptno
+--where e.ename = 'SCOTT';
+group by d.deptno;
 
 -- 36. 조인과 WildCARD를 사용하여 이름에 ‘A’가 포함된 모든 사원의 이름과 부서명을 출력하시오.
 select e.ename, d.dname
 from emp e inner join dept d
-on e.deptno = d.deptno and e.ename like '%A%';
+on e.deptno = d.deptno
+where e.ename like '%A%';
 
 -- 37. JOIN을 이용하여 NEW YORK에 근무하는 모든 사원의 이름, 업무, 부서번호 및 부서명을 출력하시오.
 select e.ename, e.job, d.deptno, d.dname, d.loc
 from emp e inner join dept d
-on e.deptno = d.deptno and d.loc ='NEW YORK';
+on e.deptno = d.deptno 
+where d.loc ='NEW YORK';
+
+select ename, job, deptno, dname, loc
+from emp inner join dept using(deptno)
+where loc ='NEW YORK';
 
 -- 38. SELF JOIN을 사용하여 사원의 이름 및 사원번호, 관리자 이름을 출력하시오.
 select e.ename, e.mgr, m.ename, m.empno
@@ -47,8 +66,9 @@ from emp e, emp m
 where e.mgr = m.empno and e.hiredate < m.hiredate;
 
 select *
-from emp join dept 
-on emp.deptno = dept.deptno;
+from emp inner join dept 
+on emp.deptno = dept.deptno
+where emp.ename = 'SCOTT';
 
 -- 이름이 SCOTT인 사람의 정보
 select *
