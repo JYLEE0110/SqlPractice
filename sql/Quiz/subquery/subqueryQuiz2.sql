@@ -22,9 +22,10 @@ having round(avg(sal)) = (select round(min(avg(sal)))from emp group by job);
 --47. 각 부서의 최소 급여를 받는 사원의 이름, 급여, 부서번호를 표시하시오.
 select ename, sal, deptno
 from emp
-where sal in (select min(e.sal)
-            from emp e join dept d using(deptno)
-            group by d.dname);
+where sal in (select min(sal)
+            from emp join dept using(deptno)
+            group by dname)
+order by deptno;
 
 --48. 담당업무가 ANALYST 인 사원보다 급여가 적으면서 
 --업무가 ANALYST가 아닌 사원들을 표시(사원번호, 이름, 담당 업무, 급여)하시오.
@@ -41,10 +42,14 @@ from emp
 where ename not in (select distinct e.ename
                     from emp e, emp m
                     where e.deptno = m.deptno
-                    and e.empno = m.mgr);
+                    and e.empno = m.mgr)
+order by case when job = 'SALESMAN' then 1
+              when job = 'CLERK' then 2
+              else 3
+              end, deptno, ename desc;
                     
 -- 50. 부하직원이 있는 사원의 이름을 표시하시오.
-select ename
+select*
 from emp
 where ename in (select distinct e.ename
                     from emp e, emp m
