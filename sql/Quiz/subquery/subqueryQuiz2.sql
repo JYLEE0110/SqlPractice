@@ -53,12 +53,12 @@ where ename in (select distinct e.ename
 
 --51. BLAKE와 동일한 부서에 속한 사원의 이름과 
 --입사일을 표시하는 질의를 작성하시오. ( 단 BLAKE는 제외 )
-select e.ename, e.hiredate 
-from emp e join dept d using(deptno)
-where d.dname = (select d.dname
-                from emp e join dept d using(deptno)
-                where e.ename = 'BLAKE')
-                and e.ename != 'BLAKE'
+select ename, hiredate 
+from emp 
+where deptno = (select deptno
+                from emp
+                where ename = 'BLAKE')
+                and ename != 'BLAKE'
 order by hiredate;
 
 --52. 급여가 평균 급여보다 많은 사원들의 사원 번호와 이름을 표시하되 
@@ -71,13 +71,63 @@ order by sal;
 
 -- 53. 이름에 K가 포함된 사원과 
 --같은 부서에서 일하는 사원의 사원 번호와 이름을 표시하시오.
+select empno, ename
+from emp
+where deptno in (select deptno
+                    from emp
+                    where ename like '%K%')
+order by deptno desc, empno desc;
 
-select e.
-from emp e join dept d using(deptno)
-where 
+--54.부서위치가 DALLAS인 사원의 이름과 부서번호 및 담당업무를 표시하시오.
+select ename, deptno, job
+from emp 
+where deptno = (select deptno
+                from dept
+                where loc = 'DALLAS');
 
+-- 55. KING에게 보고하는 사원의 이름과 급여를 표시하시오
+select m.ename, m.sal
+from emp e, emp m
+where e.empno = m.mgr and e.ename = 'KING'
+order by sal desc;
 
+--56. RESEARCH 부서의 사원에 대한 부서번호, 사원이름 및 담당 업무를 표시하시오.
+select empno, ename, job
+from emp
+where deptno = (select deptno
+                    from dept
+                    where dname = 'RESEARCH')
+order by empno;
+
+--57. 평균 월급보다 많은 급여를 받고 
+--이름에 M이 포함된 사원과 같은 부서에서 근무하는 사원의 
+--사원 번호, 이름, 급여를 표시하시오.
+select empno, ename, sal
+from emp
+where sal > (select round(avg(sal))
+                from emp)
+                and 
+    deptno in (select deptno
+                from emp
+                where ename like '%M%')
+order by job, deptno desc;
+
+--58. 평균급여가 가장 적은 업무를 찾으시오
+select job, round(avg(sal),1)
+from emp
+group by job
+having round(avg(sal),1)= (select (min(avg(sal)))
+                            from emp
+                            group by job);
+
+-- 59. 담당업무가 MANAGER 인 사원이 소속된 부서와 
+-- 동일한 부서의 사원을 표시하시오.
 select ename
 from emp
-where ename like '%K%';
-
+where deptno in (select deptno
+                from emp
+                where job = 'MANAGER')
+order by case when deptno = 20 then 1
+              when deptno = 30 then 2
+              else 3
+              end , empno desc;
