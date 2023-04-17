@@ -17,21 +17,21 @@ where sal = (select min(sal) from emp);
 select job, round(avg(sal),1)
 from emp
 group by job
-having round(avg(sal)) = (select round(min(avg(sal)))from emp group by job);
+having round(avg(sal)) = (select round(min(avg(sal)),1)from emp group by job);
 
 --47. 각 부서의 최소 급여를 받는 사원의 이름, 급여, 부서번호를 표시하시오.
 select ename, sal, deptno
 from emp
 where sal in (select min(sal)
-            from emp join dept using(deptno)
-            group by dname)
+            from emp
+            group by deptno)
 order by deptno;
 
 --48. 담당업무가 ANALYST 인 사원보다 급여가 적으면서 
 --업무가 ANALYST가 아닌 사원들을 표시(사원번호, 이름, 담당 업무, 급여)하시오.
 select empno, ename, job, sal
 from emp
-where sal < all (select sal
+where sal < all (select distinct sal
               from emp
               where job = 'ANALYST')
 order by empno;
@@ -78,7 +78,7 @@ order by sal;
 --같은 부서에서 일하는 사원의 사원 번호와 이름을 표시하시오.
 select empno, ename
 from emp
-where deptno in (select deptno
+where deptno in (select distinct deptno
                     from emp
                     where ename like '%K%')
 order by deptno desc, empno desc;
@@ -91,9 +91,11 @@ where deptno = (select deptno
                 where loc = 'DALLAS');
 
 -- 55. KING에게 보고하는 사원의 이름과 급여를 표시하시오
-select m.ename, m.sal
-from emp e, emp m
-where e.empno = m.mgr and e.ename = 'KING'
+select ename, sal
+from emp
+where mgr = (select empno
+            from emp
+            where ename = 'KING')
 order by sal desc;
 
 --56. RESEARCH 부서의 사원에 대한 부서번호, 사원이름 및 담당 업무를 표시하시오.
