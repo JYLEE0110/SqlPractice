@@ -45,7 +45,7 @@ select * from phoneinfo_basic;
 select * from phoneinfo_univ;
 select * from phoneinfo_com;
 
--- delete
+-- delete (com, univ 테이블이 basic의 pk를 참조하고있으므로 basic을 마지막에 삭제)
 delete from phoneinfo_com where fr_ref = 980110;
 delete from phoneinfo_univ where fr_ref = 980110;
 delete from phoneinfo_basic where idx = 980110;
