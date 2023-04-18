@@ -1,7 +1,7 @@
 -- 1 마당서점의고객이요구하는다음질문에대해SQL 문을작성하시오.
 
 -- (5) 박지성이구매한도서의출판사수
-select count(publisher)
+select count(distinct b.publisher)
 from customer c, orders o, book b
 where c.custid = o.custid and b.bookid = o.bookid
 and c.name='박지성';
@@ -27,6 +27,11 @@ from customer
 where name not in(select distinct c.name
                 from customer c, orders o
                 where c.custid = o.custid);
+                
+select *
+from customer c
+where not exists (select * from orders o where c.custid = o.custid ) -- select의 결과가 1행이라도 있으면 참
+;
                 
 --(9) 주문금액의총액과주문의평균금액
 select sum(saleprice), avg(saleprice)
