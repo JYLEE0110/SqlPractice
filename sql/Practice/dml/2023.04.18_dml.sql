@@ -90,5 +90,17 @@ delete from emp01 where deptno = (select deptno
 
 drop table emp01;
 create table emp01 as select* from emp;
+
 select *from emp01;
+
+commit;
+
+delete from emp01;
+rollback;
+
+create sequence seq_dept_deptno start with  10 increment by 10;
+
+select seq_dept_deptno.currval from dual;
+    
+
 

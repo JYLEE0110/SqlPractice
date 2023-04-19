@@ -137,3 +137,16 @@ create table emp01(
     deptno number(2),
     gender char(1) check (gender in ('M','F'))
     );
+desc emp01;
+alter table emp01 modify(ename varchar2(12));
+alter table emp01 add(deptno number(2));
+
+create table emp06 as select * from emp where 0=1;
+select * from emp03;
+drop table emp06;
+
+insert into emp03(job, deptno, empno, ename) values ('MANAGER', 20, 1114, 'LEE111');
+select rownum,ename from emp03;
+delete from emp03 where ename='LEE';
+select * from emp03;
+select rownum, ename from emp03;
