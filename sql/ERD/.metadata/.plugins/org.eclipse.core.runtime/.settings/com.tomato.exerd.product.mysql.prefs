@@ -1,0 +1,4 @@
+#Mon Apr 24 18:10:45 KST 2023
+com.tomato.exerd.preference.PropertyPagePrefConstants.mysql.TABLE_FEATURE_USE_OWNER_PREFIX=false
+eclipse.preferences.version=1
+com.tomato.exerd.preference.PropertyPagePrefConstants.mysql.TABLE_FEATURE_DELIMITED_IDENTIFIER=NONE
